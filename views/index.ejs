@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>RISE UIC x 전시회</title>
+  <style>
+    body {margin:0; padding:0; font-family:'맑은 고딕',sans-serif; background:#f4f7fa;}
+    .slide {display:none; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:16px 12px 90px 12px;}
+    .active {display:flex;}
+    .team-card, .poster-card, .main-card { border:1px solid #e0e6eb; border-radius:16px; margin:18px 0; padding:12px; width:92vw; max-width:370px; background:#fff;}
+    .team-img, .poster-img, .main-img { width:98%; border-radius:8px; margin-bottom:10px; }
+    .nav-bar {position:fixed; left:0; bottom:0; width:100vw; background:rgba(245,248,251,0.93); text-align:center; padding:12px 0 20px 0; box-shadow:0px -2px 7px #ccd5df33; z-index:10;}
+    .btn-nav {background:#2185d0;color:#fff;border:none;border-radius:22px;font-size:1em;padding:13px 32px;margin:0 8px;box-shadow:0 2px 6px #aac;}
+    .btn-nav:active {background:#17598d;}
+  </style>
+</head>
+<body>
+<div id="slides">
+  <!-- 1: 메인 표지 -->
+  <div class="slide active">
+  <div class="main-card">
+    <img class="main-img" src="/images/RISE UIC X 메인.png" alt="메인로고">
+    <h1 style="margin-bottom:8px;">RISE UIC x 전시회</h1>
+    <!-- 키 메시지를 더 위로 배치 -->
+    <p style="font-size:1em;font-weight:bold;margin-bottom:4px;">AI SDGs 아이디어톤 & 사회문제해결 리빙랩 박람회</p>
+    <p style="font-size:0.95em; color:#667;">2025년 8월 29일</p>
+    <small style='margin-top:10px;color:#888;'>혁신적인 아이디어와 실천적 프로젝트를 한눈에 감상하세요!</small>
+  </div>
+</div>
+<!-- 각 트랙 포스터 + 팀 슬라이드 -->
+<% tracks.forEach(function(track){ %>
+  <!-- 트랙 포스터(설명) 슬라이드 -->
+  <div class="slide">
+    <div class="poster-card">
+      <img class="poster-img" src="<%= track.poster %>" alt="<%= track.name %> 포스터">
+      <h2><%= track.name %></h2>
+    </div>
+  </div>
+  <% track.teams.forEach(function(team){ %>
+    <div class="slide">
+      <div class="team-card" style="text-align:left;">
+        <div style="font-size:0.97em;color:#276aac; font-weight:bold; margin-bottom:7px;">
+          <%= track.name %>
+        </div>
+        <h3 style="font-size:1.3em; margin-bottom:10px;"><%= team.name %></h3>
+        <div style="margin-bottom:8px;line-height:1.5;">
+          <strong style="color:#333;">서비스 주요 기능</strong><br>
+          <span><%= team.features %></span>
+        </div>
+        <div style="margin-bottom:16px; line-height:1.5;">
+          <strong style="color:#333;">기술소개</strong><br>
+          <span><%= team.tech %></span>
+        </div>
+        <img class="team-img" src="<%= team.image %>" alt="<%= team.name %> 이미지" style="margin-top:2px;height:auto;max-width:100%;border-radius:8px;">
+      </div>
+    </div>
+  <% }); %>
+<% }); %>
+
+  <!-- 마지막: 설문 안내 -->
+  <div class="slide">
+    <h2>설문조사에 참여해 주세요!</h2>
+    <button class="btn-nav" onclick="window.open('https://forms.gle/jPiavRptS6faQenx6', '_blank')">설문조사 참여하기</button>
+    <p style="margin-top:10px;font-size:13px;color:#555;">버튼 클릭 시 새 창에서 설문조사가 시작됩니다.</p>
+  </div>
+</div>
+<div class="nav-bar">
+  <button id="prevBtn" class="btn-nav">이전</button>
+  <button id="nextBtn" class="btn-nav">다음</button>
+</div>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let idx = 0;
+  function showSlide(n) {
+    slides.forEach((v,i)=>v.classList.toggle('active',i===n));
+    document.getElementById('prevBtn').style.visibility = (n===0?'hidden':'visible');
+    document.getElementById('nextBtn').style.visibility = (n===slides.length-1?'hidden':'visible');
+    window.scrollTo(0,0);
+  }
+  document.getElementById('prevBtn').onclick = ()=>{ if(idx>0) showSlide(--idx); };
+  document.getElementById('nextBtn').onclick = ()=>{ if(idx<slides.length-1) showSlide(++idx); };
+  showSlide(idx);
+  // 터치(스와이프) 지원
+  let sx=0;
+  document.addEventListener('touchstart',e=>{sx=e.changedTouches[0].screenX;},{passive:true});
+  document.addEventListener('touchend',e=>{
+    let dx=e.changedTouches[0].screenX-sx;if(dx>60&&idx>0)showSlide(--idx);else if(dx<-60&&idx<slides.length-1)showSlide(++idx);
+  },{passive:true});
+</script>
+</body>
+</html>
+
