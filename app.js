@@ -15,7 +15,7 @@ const tracks = [
     teams: [
       {
         name: 'KM Change Makers',
-        image: '/images/KM Change Makers.png'
+        image: '/images/리빙랩_Joy Ecomatics.png'
       },
       {
         name: '마이구미',
@@ -34,16 +34,28 @@ const tracks = [
     poster: '/images/트랙 2 포스터.png',
     teams: [
       {
-        name: 'Hearing Hug',
-        image: '/images/Hearing Hug.png'
+        name: 'Joy Ecomatics',
+        image: '/images/리빙랩_Joy Ecomatics.png'
       },
       {
-        name: 'COMMUNURSE',
-        image: '/images/COMMUNURSE.png'
+        name: 'DLYS',
+        image: '/images/리빙랩_DLYS.png'
       },
       {
-        name: 'Impact AI',
-        image: '/images/Impact AI.png'
+        name: '공감코드',
+        image: '/images/리빙랩_공감코드.png'
+      },
+            {
+        name: 'AI Dream Lab',
+        image: '/images/리빙랩_AIDreamLab.png'
+      },
+            {
+        name: 'CSE',
+        image: '/images/리빙랩_언더독.png'
+      },
+            {
+        name: '언더독',
+        image: '/images/리빙랩_Joy Ecomatics.png'
       }
     ]
   }
