@@ -51,11 +51,11 @@ const tracks = [
       },
             {
         name: 'CSE',
-        image: '/images/리빙랩_언더독.png'
+        image: '/images/리빙랩_cse.png'
       },
             {
         name: '언더독',
-        image: '/images/리빙랩_Joy Ecomatics.png'
+        image: '/images/리빙랩_언더독.png'
       }
     ]
   }
