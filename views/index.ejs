@@ -8,7 +8,7 @@
     body {margin:0; padding:0; font-family:'맑은 고딕',sans-serif; background:#f4f7fa;}
     .slide {display:none; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:16px 12px 90px 12px;}
     .active {display:flex;}
-    .team-card, .poster-card, .main-card { border:1px solid #e0e6eb; border-radius:16px; margin:18px 0; padding:12px; width:92vw; max-width:370px; background:#fff;}
+  .team-card, .poster-card, .main-card { border:1px solid #e0e6eb; border-radius:16px; margin:18px 0; padding:12px; width:92vw; max-width:370px; background:#fff; text-align:center;}
     .team-img, .poster-img, .main-img { width:98%; border-radius:8px; margin-bottom:10px; }
     .nav-bar {position:fixed; left:0; bottom:0; width:100vw; background:rgba(245,248,251,0.93); text-align:center; padding:12px 0 20px 0; box-shadow:0px -2px 7px #ccd5df33; z-index:10;}
     .btn-nav {background:#2185d0;color:#fff;border:none;border-radius:22px;font-size:1em;padding:13px 32px;margin:0 8px;box-shadow:0 2px 6px #aac;}
@@ -16,11 +16,14 @@
   </style>
 </head>
 <body>
+<div style="position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:1000;">
+  <span style="background:#fff;padding:10px 28px;border-radius:22px;box-shadow:0 2px 12px #ccd;font-size:1.15em;font-weight:bold;">조회수: <%= viewCount %></span>
+</div>
 <div id="slides">
   <!-- 1: 메인 표지 -->
   <div class="slide active">
   <div class="main-card">
-    <img class="main-img" src="/images/RISE UIC X 메인.png" alt="메인로고">
+  <img class="main-img" src="/images/RISE UIC X 메인.png" alt="메인로고" onerror="this.style.display='none'">
     <h1 style="margin-bottom:8px;">RISE UIC x 전시회</h1>
     <!-- 키 메시지를 더 위로 배치 -->
     <p style="font-size:1em;font-weight:bold;margin-bottom:4px;">AI SDGs 아이디어톤 & 사회문제해결 리빙랩 박람회</p>
@@ -38,23 +41,87 @@
     </div>
   </div>
   <% track.teams.forEach(function(team){ %>
+    <% if (team.name === 'KM Change Makers') { %>
+    <div class="slide">
+      <div class="team-card" style="max-width:500px;margin:auto;background:#fff;border-radius:18px;box-shadow:0 2px 16px #ccd;text-align:left;padding:32px 28px;">
+        <h1 style="text-align:center;font-size:2em;margin-bottom:18px;">AI SDGs 아이디어톤</h1>
+        <h2 style="font-size:1.25em;margin-bottom:10px;">프로젝트 개요</h2>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:18px;">
+          <tbody>
+            <tr>
+              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;width:30%;text-align:left;">대학</th>
+              <td style="padding:8px 12px;border:1px solid #e0e6eb;">경민대학교</td>
+            </tr>
+            <tr>
+              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;text-align:left;">팀명</th>
+              <td style="padding:8px 12px;border:1px solid #e0e6eb;">KM CHANGES MAKERS</td>
+            </tr>
+            <tr>
+              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;text-align:left;">팀원</th>
+              <td style="padding:8px 12px;border:1px solid #e0e6eb;">함승민, 김성훈, 윤상우</td>
+            </tr>
+            <tr>
+              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;text-align:left;">주제</th>
+              <td style="padding:8px 12px;border:1px solid #e0e6eb;">지방 소멸에 맞서는 지속가능한 생존 전략 '빈집다방'</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr style="margin:18px 0;">
+        <h2 style="font-size:1.15em;margin-bottom:10px;">문제정의</h2>
+        <p style="margin-bottom:10px;line-height:1.7;">
+          대한민국은 <b>수도권 인구 과밀화 및 주거난</b>과 <b>지방 인구 감소 및 빈집 증가</b>라는 이중의 구조적 문제에 직면하고 있습니다.<br><br>
+          이 두 문제는 서로 반대되는 방향의 문제이지만, 한 축의 수요와 다른 축의 공급이 효율적으로 연결되지 못한 채 방치되고 있는 것이 근본적인 문제입니다.<br><br>
+          <b>"수요와 공급을 연결하는 체계가 부재하다."</b><br>
+          <span style="color:#2185d0;font-weight:bold;">→ 따라서 늘어가는 지방의 빈집 문제와 수도권의 주거난 문제를 동시에 해결할 수 있는 플랫폼이 필요합니다.</span>
+        </p>
+        <hr style="margin:18px 0;">
+        <h2 style="font-size:1.15em;margin-bottom:10px;">솔루션</h2>
+        <table style="width:100%;border-collapse:collapse;margin-bottom:18px;">
+          <thead>
+            <tr style="background:#f4f7fa;">
+              <th style="padding:8px;border:1px solid #e0e6eb;">기능</th>
+              <th style="padding:8px;border:1px solid #e0e6eb;">설명</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>빈집 매칭</b></td><td style="padding:8px;border:1px solid #e0e6eb;">지방의 실제 빈집 정보와 거주자의 주거 수요를 매칭</td></tr>
+            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>AI 챗봇</b></td><td style="padding:8px;border:1px solid #e0e6eb;">개인 맞춤형으로 분석하고 최적의 지역 추천 서비스</td></tr>
+            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>커뮤니티</b></td><td style="padding:8px;border:1px solid #e0e6eb;">거주자와 지방 정착 경험자간 정보와 경험 공유 공간</td></tr>
+            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>활동 배지·업적 보상</b></td><td style="padding:8px;border:1px solid #e0e6eb;">지방 방문·거주 실적을 업적으로 참여 동기 부여 시스템</td></tr>
+          </tbody>
+        </table>
+        <hr style="margin:18px 0;">
+        <h2 style="font-size:1.15em;margin-bottom:10px;">기대효과</h2>
+        <ul style="margin-bottom:18px;line-height:1.7;">
+          <li>✓ <b>수도권 주거 문제 해소</b></li>
+          <li>✓ <b>지역 경제 및 커뮤니티 활성화</b></li>
+          <li>✓ <b>농촌 지역의 빈집 활용</b></li>
+          <li>✓ <b>지방 재정 강화 및 일자리 창출</b></li>
+          <li>✓ <b>청년 인구의 지방 유입 촉진</b></li>
+          <li>✓ <b>지속가능한 인구 구조 개선</b></li>
+        </ul>
+        <hr style="margin:18px 0;">
+        <h2 style="font-size:1.15em;margin-bottom:10px;">앱/웹 화면</h2>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;justify-items:center;align-items:center;margin-bottom:10px;">
+          <img src="/images/KM CHANGE MAKERS_앱 사진1.png" alt="앱 화면1" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
+          <img src="/images/KM CHANGE MAKERS_앱 사진2.png" alt="앱 화면2" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
+          <img src="/images/KM CHANGE MAKERS_앱 사진3.png" alt="앱 화면3" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
+          <img src="/images/KM CHANGE MAKERS_앱 사진4.png" alt="앱 화면4" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
+        </div>
+        </div>
+      </div>
+    </div>
+    <% } else { %>
     <div class="slide">
       <div class="team-card" style="text-align:left;">
         <div style="font-size:0.97em;color:#276aac; font-weight:bold; margin-bottom:7px;">
           <%= track.name %>
         </div>
         <h3 style="font-size:1.3em; margin-bottom:10px;"><%= team.name %></h3>
-        <!-- <div style="margin-bottom:8px;line-height:1.5;">
-          <strong style="color:#333;">서비스 주요 기능</strong><br>
-          <span><%= team.features %></span>
-        </div>
-        <div style="margin-bottom:16px; line-height:1.5;">
-          <strong style="color:#333;">기술소개</strong><br>
-          <span><%= team.tech %></span>
-        </div> -->
         <img class="team-img" src="<%= team.image %>" alt="<%= team.name %> 이미지" style="margin-top:2px;height:auto;max-width:100%;border-radius:8px;">
       </div>
     </div>
+    <% } %>
   <% }); %>
 <% }); %>
 
