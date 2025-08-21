@@ -1,3 +1,4 @@
+let viewCount = 0; // 조회수 변수
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -62,8 +63,15 @@ const tracks = [
 ];
 
 app.get('/', (req, res) => {
-  res.render('index', { tracks });
+  viewCount++;
+  res.render('index', { tracks, viewCount });
+  });
+// 관리자용 조회수 확인 페이지
+app.get('/admin/views', (req, res) => {
+  res.send(`<h1>총 접속수: ${viewCount}</h1>`);
 });
+
+
 
 app.listen(port, () => {
   console.log(`RISE UIC Node.js 서버 실행중: http://localhost:${port}`);
