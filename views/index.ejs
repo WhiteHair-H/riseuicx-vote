@@ -5,6 +5,35 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>RISE UIC x 전시회</title>
   <style>
+    .app-images-grid {
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      justify-items:center;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .app-img {
+      width:90vw;
+      max-width:180px;
+      height:auto;
+      aspect-ratio:9/16;
+      object-fit:contain;
+      border-radius:12px;
+      box-shadow:0 2px 8px #ccd;
+      background:#f4f7fa;
+      display:block;
+    }
+    @media (max-width: 600px) {
+      .app-images-grid {
+        grid-template-columns:1fr;
+        gap:10px;
+      }
+      .app-img {
+        max-width:96vw;
+        width:96vw;
+      }
+    }
     body {margin:0; padding:0; font-family:'맑은 고딕',sans-serif; background:#232F3E; color:#16191F;}
     .slide {
       display:none;
@@ -164,11 +193,11 @@
         </ul>
         <hr style="margin:18px 0;">
         <h2 style="font-size:1.15em;margin-bottom:10px;">앱/웹 화면</h2>
-        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;justify-items:center;align-items:center;margin-bottom:10px;">
-          <img src="/images/KM CHANGE MAKERS_앱 사진1.png" alt="앱 화면1" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
-          <img src="/images/KM CHANGE MAKERS_앱 사진2.png" alt="앱 화면2" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
-          <img src="/images/KM CHANGE MAKERS_앱 사진3.png" alt="앱 화면3" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
-          <img src="/images/KM CHANGE MAKERS_앱 사진4.png" alt="앱 화면4" style="width:90vw;max-width:180px;height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:12px;box-shadow:0 2px 8px #ccd;background:#f4f7fa;">
+        <div class="app-images-grid">
+          <img src="/images/KM CHANGE MAKERS_앱 사진1.png" alt="앱 화면1" class="app-img">
+          <img src="/images/KM CHANGE MAKERS_앱 사진2.png" alt="앱 화면2" class="app-img">
+          <img src="/images/KM CHANGE MAKERS_앱 사진3.png" alt="앱 화면3" class="app-img">
+          <img src="/images/KM CHANGE MAKERS_앱 사진4.png" alt="앱 화면4" class="app-img">
         </div>
         </div>
       </div>

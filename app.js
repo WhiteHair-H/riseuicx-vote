@@ -11,6 +11,7 @@ const viewsPath = process.env.VIEWS_PATH || path.join(__dirname, 'views');
 app.set('views', viewsPath);
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 const tracks = [
   {
     name: '트랙1: AI SDGs 아이디어톤',
