@@ -6,21 +6,19 @@
   <title>RISE UIC x 전시회</title>
   <style>
     .app-images-grid {
-      display: flex !important;
-      flex-direction: row !important;
-      gap: 12px;
-      justify-content: flex-start;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      justify-items: center;
+      align-items: start;
       margin-bottom: 10px;
       width: 100%;
       box-sizing: border-box;
-      overflow-x: auto;
-      padding-bottom: 4px;
+      padding: 0 6vw 8px 6vw; /* symmetric horizontal padding */
     }
     .app-img {
-      width: 22vw;
-      max-width: 120px;
-      min-width: 80px;
+      width: 44vw;              /* roughly half the viewport to fit two per row */
+      max-width: 200px;        /* cap on larger screens */
       height: auto;
       aspect-ratio: 9/16;
       object-fit: contain;
@@ -28,21 +26,19 @@
       box-shadow: 0 2px 8px #ccd;
       background: #f4f7fa;
       display: block;
+      margin: 0;               /* centered by grid cell */
     }
     @media (max-width: 700px) {
       .app-images-grid {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 8px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
         width: 100vw;
         max-width: 100vw;
-        padding: 0;
-        overflow-x: auto;
+        padding: 0 5vw 8px 5vw; /* slightly tighter padding on small screens */
       }
       .app-img {
-        max-width: 90px;
-        width: 20vw;
-        min-width: 60px;
+        width: 40vw;          /* keep two images per row without overflow */
+        max-width: 160px;
         margin: 0 auto;
       }
     }
