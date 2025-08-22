@@ -6,7 +6,9 @@ const port = process.env.PORT || 80;
 
 app.set('trust proxy', true);
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// 서버 환경에 따라 views 경로를 절대 경로로 지정할 수 있도록 처리
+const viewsPath = process.env.VIEWS_PATH || path.join(__dirname, 'views');
+app.set('views', viewsPath);
 app.use(express.static(path.join(__dirname, 'public')));
 
 const tracks = [
