@@ -1,0 +1,389 @@
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script>
+  // Swiper 초기화
+  document.querySelectorAll('.swiper').forEach(function(el){
+    new Swiper(el, {
+      loop: true,
+      pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
+      navigation: {
+        nextEl: el.querySelector('.swiper-button-next'),
+        prevEl: el.querySelector('.swiper-button-prev'),
+      },
+      slidesPerView: 1,
+      spaceBetween: 16,
+    });
+  });
+
+  // 🎨 새로운 이쁜 네비게이션 시스템
+  setTimeout(() => {
+    // 슬라이드 네비게이션 생성
+    const nav = document.createElement('div');
+    nav.id = 'modernNavigation';
+    nav.style.cssText = `
+      position: fixed !important;
+      bottom: 25px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 15px !important;
+      z-index: 999999 !important;
+      background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)) !important;
+      backdrop-filter: blur(15px) !important;
+      padding: 15px 25px !important;
+      border-radius: 50px !important;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+    `;
+    
+    // 이전 버튼
+    const prevBtn = document.createElement('button');
+    prevBtn.innerHTML = '⬅';
+    prevBtn.style.cssText = `
+      background: linear-gradient(135deg, #FF6B6B, #FF8E8E) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 50% !important;
+      width: 50px !important;
+      height: 50px !important;
+      font-size: 20px !important;
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    `;
+    
+    // 슬라이드 표시기
+    const indicator = document.createElement('div');
+    indicator.style.cssText = `
+      color: white !important;
+      font-weight: bold !important;
+      font-size: 16px !important;
+      min-width: 60px !important;
+      text-align: center !important;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+    `;
+    
+    // 다음 버튼
+    const nextBtn = document.createElement('button');
+    nextBtn.innerHTML = '➡';
+    nextBtn.style.cssText = `
+      background: linear-gradient(135deg, #4ECDC4, #6EFCE8) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 50% !important;
+      width: 50px !important;
+      height: 50px !important;
+      font-size: 20px !important;
+      cursor: pointer !important;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+      box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    `;
+    
+    // 진행 바
+    const progressBar = document.createElement('div');
+    progressBar.style.cssText = `
+      position: absolute !important;
+      bottom: -2px !important;
+      left: 0 !important;
+      height: 3px !important;
+      background: linear-gradient(90deg, #FF6B6B, #4ECDC4) !important;
+      border-radius: 3px !important;
+      transition: width 0.5s ease !important;
+    `;
+    
+    // 슬라이드 로직
+    const allSlides = document.querySelectorAll('.slide');
+    let currentIdx = 0;
+    
+    function updateNavigation() {
+      // 슬라이드 표시
+      allSlides.forEach((slide, i) => {
+        slide.style.display = i === currentIdx ? 'flex' : 'none';
+      });
+      
+      // 접속수 표시/숨김 (메인 페이지인 첫 번째 슬라이드에서만 표시)
+      const viewCountElement = document.querySelector('div[style*="position:fixed"][style*="top:18px"]');
+      if (viewCountElement) {
+        viewCountElement.style.display = currentIdx === 0 ? 'block' : 'none';
+      }
+      
+      // 표시기 업데이트
+      indicator.textContent = `${currentIdx + 1} / ${allSlides.length}`;
+      
+      // 진행 바 업데이트
+      const progress = ((currentIdx + 1) / allSlides.length) * 100;
+      progressBar.style.width = `${progress}%`;
+      
+      // 버튼 상태 업데이트
+      prevBtn.style.opacity = currentIdx === 0 ? '0.5' : '1';
+      prevBtn.style.cursor = currentIdx === 0 ? 'not-allowed' : 'pointer';
+      nextBtn.style.opacity = currentIdx === allSlides.length - 1 ? '0.5' : '1';
+      nextBtn.style.cursor = currentIdx === allSlides.length - 1 ? 'not-allowed' : 'pointer';
+      
+      // 맨 위로 스크롤
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // 이벤트 리스너
+    prevBtn.addEventListener('click', function() {
+      if (currentIdx > 0) {
+        currentIdx--;
+        updateNavigation();
+        
+        // 클릭 애니메이션
+        this.style.transform = 'scale(0.8) rotate(-10deg)';
+        setTimeout(() => {
+          this.style.transform = 'scale(1) rotate(0deg)';
+        }, 200);
+      }
+    });
+    
+    nextBtn.addEventListener('click', function() {
+      if (currentIdx < allSlides.length - 1) {
+        currentIdx++;
+        updateNavigation();
+        
+        // 클릭 애니메이션
+        this.style.transform = 'scale(0.8) rotate(10deg)';
+        setTimeout(() => {
+          this.style.transform = 'scale(1) rotate(0deg)';
+        }, 200);
+      }
+    });
+    
+    // 호버 효과
+    prevBtn.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.boxShadow = '0 6px 20px rgba(255, 107, 107, 0.6)';
+    });
+    
+    prevBtn.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+      this.style.boxShadow = '0 4px 15px rgba(255, 107, 107, 0.4)';
+    });
+    
+    nextBtn.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.boxShadow = '0 6px 20px rgba(78, 205, 196, 0.6)';
+    });
+    
+    nextBtn.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+      this.style.boxShadow = '0 4px 15px rgba(78, 205, 196, 0.4)';
+    });
+    
+    // 키보드 네비게이션
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft' && currentIdx > 0) {
+        currentIdx--;
+        updateNavigation();
+      } else if (e.key === 'ArrowRight' && currentIdx < allSlides.length - 1) {
+        currentIdx++;
+        updateNavigation();
+      }
+    });
+    
+    // 빠른 이동 컨테이너
+    const quickNavContainer = document.createElement('div');
+    quickNavContainer.style.cssText = `
+      position: relative !important;
+      display: flex !important;
+      align-items: center !important;
+      margin: 0 15px !important;
+    `;
+    
+    // 빠른이동 메인 버튼
+    const quickMoveBtn = document.createElement('button');
+    quickMoveBtn.innerHTML = '빠른이동';
+    quickMoveBtn.style.cssText = `
+      background: linear-gradient(135deg, #9C27B0, #673AB7) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 20px !important;
+      padding: 8px 12px !important;
+      font-size: 12px !important;
+      font-weight: bold !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+      position: relative !important;
+    `;
+    
+    // 토글 버튼들 컨테이너
+    const toggleButtonsContainer = document.createElement('div');
+    toggleButtonsContainer.style.cssText = `
+      position: absolute !important;
+      bottom: 45px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      display: none !important;
+      flex-direction: column !important;
+      gap: 8px !important;
+      background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(0,0,0,0.7)) !important;
+      backdrop-filter: blur(15px) !important;
+      padding: 15px !important;
+      border-radius: 15px !important;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3) !important;
+      border: 1px solid rgba(255,255,255,0.1) !important;
+      z-index: 999999 !important;
+    `;
+    
+    // 아이디어톤 버튼 (2페이지 - 트랙1 포스터)
+    const ideathonBtn = document.createElement('button');
+    ideathonBtn.innerHTML = '아이디어톤';
+    ideathonBtn.title = '아이디어톤으로 이동';
+    ideathonBtn.style.cssText = `
+      background: linear-gradient(135deg, #FF6B6B, #FF8E8E) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 15px !important;
+      padding: 8px 15px !important;
+      font-size: 12px !important;
+      font-weight: bold !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+      min-width: 80px !important;
+    `;
+    ideathonBtn.addEventListener('click', function() {
+      currentIdx = 1; // 트랙1 포스터 페이지
+      updateNavigation();
+      toggleButtonsContainer.style.display = 'none'; // 버튼 숨기기
+    });
+    
+    // 리빙랩 버튼 (14페이지 - 트랙2 포스터)
+    const livinglabBtn = document.createElement('button');
+    livinglabBtn.innerHTML = '리빙랩';
+    livinglabBtn.title = '리빙랩으로 이동';
+    livinglabBtn.style.cssText = `
+      background: linear-gradient(135deg, #4ECDC4, #6EFCE8) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 15px !important;
+      padding: 8px 15px !important;
+      font-size: 12px !important;
+      font-weight: bold !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+      min-width: 80px !important;
+    `;
+    livinglabBtn.addEventListener('click', function() {
+      currentIdx = 13; // 트랙2 포스터 페이지 (1메인 + 1트랙1포스터 + 11트랙1팀들)
+      updateNavigation();
+      toggleButtonsContainer.style.display = 'none'; // 버튼 숨기기
+    });
+    
+    // 설문조사 버튼 (마지막 페이지)
+    const surveyBtn = document.createElement('button');
+    surveyBtn.innerHTML = '설문조사';
+    surveyBtn.title = '설문조사로 이동';
+    surveyBtn.style.cssText = `
+      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      color: white !important;
+      border: none !important;
+      border-radius: 15px !important;
+      padding: 8px 15px !important;
+      font-size: 12px !important;
+      font-weight: bold !important;
+      cursor: pointer !important;
+      transition: all 0.3s ease !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      white-space: nowrap !important;
+      min-width: 80px !important;
+    `;
+    surveyBtn.addEventListener('click', function() {
+      currentIdx = allSlides.length - 1; // 마지막 슬라이드
+      updateNavigation();
+      toggleButtonsContainer.style.display = 'none'; // 버튼 숨기기
+    });
+    
+    // 토글 기능
+    let isToggleOpen = false;
+    quickMoveBtn.addEventListener('click', function() {
+      isToggleOpen = !isToggleOpen;
+      toggleButtonsContainer.style.display = isToggleOpen ? 'flex' : 'none';
+      
+      // 버튼 애니메이션
+      this.style.transform = isToggleOpen ? 'scale(1.05)' : 'scale(1)';
+      this.style.background = isToggleOpen ? 
+        'linear-gradient(135deg, #8E24AA, #5E35B1)' : 
+        'linear-gradient(135deg, #9C27B0, #673AB7)';
+    });
+    
+    // 외부 클릭시 토글 닫기
+    document.addEventListener('click', function(event) {
+      if (!quickNavContainer.contains(event.target)) {
+        isToggleOpen = false;
+        toggleButtonsContainer.style.display = 'none';
+        quickMoveBtn.style.transform = 'scale(1)';
+        quickMoveBtn.style.background = 'linear-gradient(135deg, #9C27B0, #673AB7)';
+      }
+    });
+    
+    // 호버 효과 추가
+    [ideathonBtn, livinglabBtn, surveyBtn].forEach(btn => {
+      btn.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+      });
+      btn.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+      });
+    });
+    
+    quickMoveBtn.addEventListener('mouseenter', function() {
+      if (!isToggleOpen) {
+        this.style.transform = 'scale(1.05)';
+      }
+    });
+    
+    quickMoveBtn.addEventListener('mouseleave', function() {
+      if (!isToggleOpen) {
+        this.style.transform = 'scale(1)';
+      }
+    });
+    
+    // 토글 버튼들을 컨테이너에 추가
+    toggleButtonsContainer.appendChild(ideathonBtn);
+    toggleButtonsContainer.appendChild(livinglabBtn);
+    toggleButtonsContainer.appendChild(surveyBtn);
+    
+    // 빠른이동 컨테이너에 추가
+    quickNavContainer.appendChild(quickMoveBtn);
+    quickNavContainer.appendChild(toggleButtonsContainer);
+    
+    // 네비게이션 조립
+    nav.appendChild(prevBtn);
+    nav.appendChild(indicator);
+    nav.appendChild(quickNavContainer);
+    nav.appendChild(nextBtn);
+    nav.appendChild(progressBar);
+    document.body.appendChild(nav);
+    
+    // 초기 설정
+    updateNavigation();
+    
+    console.log('✨ 모던 네비게이션이 로드되었습니다!');
+    console.log('🎯 총 슬라이드:', allSlides.length);
+    console.log('⌨️ 방향키로도 조작 가능합니다!');
+    
+  }, 500);
+</script>
+</script>

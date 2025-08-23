@@ -1,259 +1,116 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>RISE UIC x 전시회</title>
-  <style>
-    .app-images-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      justify-items: center;
-      align-items: start;
-      margin-bottom: 10px;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0 6vw 8px 6vw; /* symmetric horizontal padding */
-    }
-    .app-img {
-      width: 44vw;              /* roughly half the viewport to fit two per row */
-      max-width: 200px;        /* cap on larger screens */
-      height: auto;
-      aspect-ratio: 9/16;
-      object-fit: contain;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px #ccd;
-      background: #f4f7fa;
-      display: block;
-      margin: 0;               /* centered by grid cell */
-    }
-    @media (max-width: 700px) {
-      .app-images-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-        width: 100vw;
-        max-width: 100vw;
-        padding: 0 5vw 8px 5vw; /* slightly tighter padding on small screens */
-      }
-      .app-img {
-        width: 40vw;          /* keep two images per row without overflow */
-        max-width: 160px;
-        margin: 0 auto;
-      }
-    }
-    body {margin:0; padding:0; font-family:'맑은 고딕',sans-serif; background:#232F3E; color:#16191F;}
-    .slide {
-      display:none;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
-      min-height:100vh;
-      padding:16px 8px 90px 8px;
-      box-sizing:border-box;
-      overflow-y:auto;
-      width:100vw;
-      max-width:100vw;
-    }
-    .active {display:flex;}
-    .team-card, .poster-card, .main-card {
-      border:1px solid #3A4553;
-      border-radius:16px;
-      margin:18px 0;
-      padding:12px;
-      width:100%;
-      max-width:400px;
-      background:#F3F3F3;
-      text-align:center;
-      box-shadow:0 2px 12px #16191F22;
-      box-sizing:border-box;
-    }
-    .team-img, .poster-img, .main-img {
-      width:98%;
-      border-radius:8px;
-      margin-bottom:10px;
-      background:#fff;
-      box-shadow:0 2px 8px #232F3E22;
-      max-width:100%;
-      height:auto;
-    }
-    .nav-bar {
-      position:fixed;
-      left:0;
-      bottom:0;
-      width:100vw;
-      background:#232F3E;
-      text-align:center;
-      padding:12px 0 20px 0;
-      box-shadow:0px -2px 7px #16191F33;
-      z-index:10;
-    }
-    .btn-nav {
-      background:#FF9900;
-      color:#fff;
-      border:none;
-      border-radius:22px;
-      font-size:1em;
-      padding:13px 32px;
-      margin:0 8px;
-      box-shadow:0 2px 6px #232F3E44;
-      font-weight:bold;
-      transition:background 0.2s;
-    }
-    .btn-nav:active {background:#D97706;}
-    h1, h2, h3, h4, h5, h6 { color:#232F3E; }
-    small, p, li, td, th { color:#545B64; }
-    @media (max-width: 600px) {
-      .team-card, .poster-card, .main-card {
-        max-width:98vw;
-        padding:10px 4vw;
-      }
-      .slide {
-        padding:10px 2vw 90px 2vw;
-      }
-    }
-  </style>
+  <!-- 공통 <head> -->
+  <%- include('partials/_head') %>
+    <title>RISE UIC x 전시회</title>
+    <!-- 전역 스타일 -->
+    <link rel="stylesheet" href="/styles.css">
 </head>
+
 <body>
-<div style="position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:1000;">
-  <span style="background:#fff;padding:10px 28px;border-radius:22px;box-shadow:0 2px 12px #ccd;font-size:1.15em;font-weight:bold;">조회수: <%= viewCount %></span>
-</div>
-<div id="slides">
-  <!-- 1: 메인 표지 -->
-  <div class="slide active">
-  <div class="main-card">
-  <img class="main-img" src="/images/RISE UIC X 메인.png" alt="메인로고" onerror="this.style.display='none'">
-    <h1 style="margin-bottom:8px;">RISE UIC x 전시회</h1>
-    <!-- 키 메시지를 더 위로 배치 -->
-    <p style="font-size:1em;font-weight:bold;margin-bottom:4px;">AI SDGs 아이디어톤 & 사회문제해결 리빙랩 박람회</p>
-    <p style="font-size:0.95em; color:#667;">2025년 8월 29일</p>
-    <small style='margin-top:10px;color:#888;'>혁신적인 아이디어와 실천적 프로젝트를 한눈에 감상하세요!</small>
-  </div>
-</div>
-<!-- 각 트랙 포스터 + 팀 슬라이드 -->
-<% tracks.forEach(function(track){ %>
-  <!-- 트랙 포스터(설명) 슬라이드 -->
-  <div class="slide">
-    <div class="poster-card">
-      <img class="poster-img" src="<%= track.poster %>" alt="<%= track.name %> 포스터">
-      <h2><%= track.name %></h2>
-    </div>
-  </div>
-  <% track.teams.forEach(function(team){ %>
-    <% if (team.name === 'KM Change Makers') { %>
-    <div class="slide">
-      <div class="team-card" style="max-width:500px;margin:auto;background:#fff;border-radius:18px;box-shadow:0 2px 16px #ccd;text-align:left;padding:32px 28px;">
-        <h1 style="text-align:center;font-size:2em;margin-bottom:18px;">AI SDGs 아이디어톤</h1>
-        <h2 style="font-size:1.25em;margin-bottom:10px;">프로젝트 개요</h2>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:18px;">
-          <tbody>
-            <tr>
-              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;width:30%;text-align:left;">대학</th>
-              <td style="padding:8px 12px;border:1px solid #e0e6eb;">경민대학교</td>
-            </tr>
-            <tr>
-              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;text-align:left;">팀명</th>
-              <td style="padding:8px 12px;border:1px solid #e0e6eb;">KM CHANGES MAKERS</td>
-            </tr>
-            <tr>
-              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;text-align:left;">팀원</th>
-              <td style="padding:8px 12px;border:1px solid #e0e6eb;">함승민, 김성훈, 윤상우</td>
-            </tr>
-            <tr>
-              <th style="background:#f4f7fa;padding:8px 12px;border:1px solid #e0e6eb;text-align:left;">주제</th>
-              <td style="padding:8px 12px;border:1px solid #e0e6eb;">지방 소멸에 맞서는 지속가능한 생존 전략 '빈집다방'</td>
-            </tr>
-          </tbody>
-        </table>
-        <hr style="margin:18px 0;">
-        <h2 style="font-size:1.15em;margin-bottom:10px;">문제정의</h2>
-        <p style="margin-bottom:10px;line-height:1.7;">
-          대한민국은 <b>수도권 인구 과밀화 및 주거난</b>과 <b>지방 인구 감소 및 빈집 증가</b>라는 이중의 구조적 문제에 직면하고 있습니다.<br><br>
-          이 두 문제는 서로 반대되는 방향의 문제이지만, 한 축의 수요와 다른 축의 공급이 효율적으로 연결되지 못한 채 방치되고 있는 것이 근본적인 문제입니다.<br><br>
-          <b>"수요와 공급을 연결하는 체계가 부재하다."</b><br>
-          <span style="color:#2185d0;font-weight:bold;">→ 따라서 늘어가는 지방의 빈집 문제와 수도권의 주거난 문제를 동시에 해결할 수 있는 플랫폼이 필요합니다.</span>
-        </p>
-        <hr style="margin:18px 0;">
-        <h2 style="font-size:1.15em;margin-bottom:10px;">솔루션</h2>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:18px;">
-          <thead>
-            <tr style="background:#f4f7fa;">
-              <th style="padding:8px;border:1px solid #e0e6eb;">기능</th>
-              <th style="padding:8px;border:1px solid #e0e6eb;">설명</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>빈집 매칭</b></td><td style="padding:8px;border:1px solid #e0e6eb;">지방의 실제 빈집 정보와 거주자의 주거 수요를 매칭</td></tr>
-            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>AI 챗봇</b></td><td style="padding:8px;border:1px solid #e0e6eb;">개인 맞춤형으로 분석하고 최적의 지역 추천 서비스</td></tr>
-            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>커뮤니티</b></td><td style="padding:8px;border:1px solid #e0e6eb;">거주자와 지방 정착 경험자간 정보와 경험 공유 공간</td></tr>
-            <tr><td style="padding:8px;border:1px solid #e0e6eb;"><b>활동 배지·업적 보상</b></td><td style="padding:8px;border:1px solid #e0e6eb;">지방 방문·거주 실적을 업적으로 참여 동기 부여 시스템</td></tr>
-          </tbody>
-        </table>
-        <hr style="margin:18px 0;">
-        <h2 style="font-size:1.15em;margin-bottom:10px;">기대효과</h2>
-        <ul style="margin-bottom:18px;line-height:1.7;">
-          <li>✓ <b>수도권 주거 문제 해소</b></li>
-          <li>✓ <b>지역 경제 및 커뮤니티 활성화</b></li>
-          <li>✓ <b>농촌 지역의 빈집 활용</b></li>
-          <li>✓ <b>지방 재정 강화 및 일자리 창출</b></li>
-          <li>✓ <b>청년 인구의 지방 유입 촉진</b></li>
-          <li>✓ <b>지속가능한 인구 구조 개선</b></li>
-        </ul>
-        <hr style="margin:18px 0;">
-        <h2 style="font-size:1.15em;margin-bottom:10px;">앱/웹 화면</h2>
-        <div class="app-images-grid">
-          <img src="/images/KM CHANGE MAKERS_앱 사진1.png" alt="앱 화면1" class="app-img">
-          <img src="/images/KM CHANGE MAKERS_앱 사진2.png" alt="앱 화면2" class="app-img">
-          <img src="/images/KM CHANGE MAKERS_앱 사진3.png" alt="앱 화면3" class="app-img">
-          <img src="/images/KM CHANGE MAKERS_앱 사진4.png" alt="앱 화면4" class="app-img">
-        </div>
-        </div>
-      </div>
-    </div>
-    <% } else { %>
-    <div class="slide">
-      <div class="team-card" style="text-align:left;">
-        <div style="font-size:0.97em;color:#276aac; font-weight:bold; margin-bottom:7px;">
-          <%= track.name %>
-        </div>
-        <h3 style="font-size:1.3em; margin-bottom:10px;"><%= team.name %></h3>
-        <img class="team-img" src="<%= team.image %>" alt="<%= team.name %> 이미지" style="margin-top:2px;height:auto;max-width:100%;border-radius:8px;">
-      </div>
-    </div>
-    <% } %>
-  <% }); %>
-<% }); %>
+  <!-- 상단 고정: 조회수 뱃지 등 -->
+  <%- include('partials/_header', { viewCount: viewCount }) %>
 
-  <!-- 마지막: 설문 안내 -->
-  <div class="slide">
-    <h2>설문조사에 참여해 주세요!</h2>
-    <button class="btn-nav" onclick="window.open('https://forms.gle/jPiavRptS6faQenx6', '_blank')">설문조사 참여하기</button>
-  <p style="margin-top:10px;font-size:13px;color:#F3F3F3;">버튼 클릭 시 새 창에서 설문조사가 시작됩니다.</p>
-  </div>
-</div>
-<div class="nav-bar">
-  <button id="prevBtn" class="btn-nav">이전</button>
-  <button id="nextBtn" class="btn-nav">다음</button>
-</div>
-<script>
-  const slides = document.querySelectorAll('.slide');
-  let idx = 0;
-  function showSlide(n) {
-    slides.forEach((v,i)=>v.classList.toggle('active',i===n));
-    document.getElementById('prevBtn').style.visibility = (n===0?'hidden':'visible');
-    document.getElementById('nextBtn').style.visibility = (n===slides.length-1?'hidden':'visible');
-    window.scrollTo(0,0);
-  }
-  document.getElementById('prevBtn').onclick = ()=>{ if(idx>0) showSlide(--idx); };
-  document.getElementById('nextBtn').onclick = ()=>{ if(idx<slides.length-1) showSlide(++idx); };
-  showSlide(idx);
-  // 터치(스와이프) 지원
-  let sx=0;
-  document.addEventListener('touchstart',e=>{sx=e.changedTouches[0].screenX;},{passive:true});
-  document.addEventListener('touchend',e=>{
-    let dx=e.changedTouches[0].screenX-sx;if(dx>60&&idx>0)showSlide(--idx);else if(dx<-60&&idx<slides.length-1)showSlide(++idx);
-  },{passive:true});
-</script>
+    <div id="slides">
+      <!-- 0) 메인 표지 슬라이드 -->
+      <div class="slide active">
+        <div class="main-card">
+          <img class="main-img" src="/images/RISE UIC X 메인.png" alt="메인로고" onerror="this.style.display='none'">
+          <h1>RISE UIC X 전시회</h1>
+          <p style="font-size:1em; font-weight:bold; line-height:1.4; text-align:center;">
+            AI SDGs 아이디어톤 <br>
+            & <br>
+            사회문제해결 리빙랩
+          </p>
+          <small style="color:#666; font-size:0.8em;">
+            청년들이 제안하는 AI 기반 사회문제 해결 솔루션을 만나보세요!
+          </small>
+          <div class="hashtags">
+            <span>#RISE_UIC_X</span>
+            <span>#AISDGs</span>
+            <span>#AI아이디어톤</span>
+            <span>#사회문제해결리빙랩</span>
+            <span>#부스체험</span>
+          </div>
+        </div>
+      </div>
+
+      <% /* app.js에서 전달받은 teamTplMap 사용 */ %>
+
+        <!-- 2) 트랙/팀 루프 -->
+        <% tracks.forEach(function(track){ %>
+          <!-- 트랙 포스터 슬라이드 -->
+          <div class="slide">
+            <div class="poster-card" style="text-align:center;">
+              <img class="poster-img" src="<%= track.poster %>" alt="<%= track.name %> 포스터" 
+                   style="display:block;margin:0 auto;max-width:90%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);"
+                   onerror="console.error('포스터 이미지 로드 실패:', this.src); this.style.border='2px solid red';">
+              <h2>
+                <%= track.name %>
+              </h2>
+              <% if (track.name.includes('리빙랩')) { %>
+                <p style="font-size:0.9em;color:#666;text-align:center;margin-top:15px;line-height:1.5;padding:0 20px;">
+                  실생활, 지역사회, 산업 현장 등 우리 주변에서 발생하는 사회문제를 발굴하고,<br>
+                  이를 AI 기반 서비스 프로토타입으로 해결하는 프로젝트
+                </p>
+              <% } %>
+              <% if (track.name.includes('아이디어톤')) { %>
+                <p style="font-size:0.9em;color:#666;text-align:center;margin-top:15px;line-height:1.5;padding:0 20px;">
+                  지속가능발전목표(SDGs)를 기반으로 환경·교육·건강·도시 등<br>
+                  다양한 사회문제를 AI 기술로 해결하는 혁신적 아이디어 프로젝트
+                </p>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- 트랙 내 팀들 -->
+          <% track.teams.forEach(function(team){ %>
+            <% const tpl=teamTplMap[team.name]; %>
+
+              <% if (tpl) { %>
+                <!-- 팀별 상세 템플릿 include -->
+                <%- include('teams/' + tpl, { team: team, track: track }) %>
+                  <% } else { %>
+                    <!-- 매핑이 없을 때: 공통 팀 카드 (이름/이미지만) -->
+                    <div class="slide">
+                      <div class="team-card" style="text-align:left;">
+                        <div style="font-size:0.97em;color:#276aac;font-weight:bold;margin-bottom:7px;">
+                          <%= track.name %>
+                        </div>
+                        <h3 style="font-size:1.3em;margin-bottom:10px;">
+                          <%= team.name %>
+                        </h3>
+                        <img class="team-img" src="<%= team.image %>" alt="<%= team.name %> 이미지"
+                          style="margin-top:2px;height:auto;max-width:100%;border-radius:8px;">
+                      </div>
+                    </div>
+                    <% } %>
+                      <% }); %>
+                        <% }); %>
+
+                          <!-- 3) 마지막 설문 슬라이드 -->
+                          <div class="slide">
+                            <div style="text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;">
+                              <h2 style="color:#F3F3F3;font-size:1.8em;margin-bottom:30px;margin-top:60px;">설문조사에 참여해 주세요!</h2>
+                              <button style="padding:25px 50px !important;font-size:1.5em !important;margin:20px 0 !important;border-radius:12px !important;background:linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;color:white !important;border:none !important;cursor:pointer !important;box-shadow:0 4px 15px rgba(102, 126, 234, 0.4) !important;transition:all 0.3s ease !important;display:block !important;min-width:300px !important;font-weight:bold !important;"
+                                onclick="window.open('https://forms.gle/jPiavRptS6faQenx6', '_blank')"
+                                onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.6)'"
+                                onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.4)'">
+                                📝 설문조사 참여하기 📝
+                              </button>
+                              <p style="margin-top:20px;font-size:14px;color:#ccc;text-align:center;">
+                                버튼 클릭 시 새 창에서 설문조사가 시작됩니다.
+                              </p>
+                            </div>
+                          </div>
+    </div>
+
+    <!-- 🎉 모던 네비게이션이 JavaScript에서 자동 생성됩니다! -->
+
+    <!-- 공통 스크립트: Swiper, 슬라이드 컨트롤 등 -->
+    <%- include('partials/_scripts') %>
 </body>
-</html>
 
+</html>
